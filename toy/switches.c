@@ -2,6 +2,9 @@
 #include "switches.h"
 #include "led.h"
 #include "buzzer.h"
+#include "lcdutils.h"
+#include "lcddraw.h"
+#include "piano_images.h" // added graphic
 
 static char buttonStates = 0;
 static char octaveShift = 0;  // To track octave shift (0 = normal, 1 = shifted)
@@ -48,19 +51,26 @@ void switch_interrupt_handler() {
   // Handle buzzer frequencies based on switch presses
   if (buttonStates & SW2) {
     buzzer_set_period(octaveShift ? 955 : 1911);  // C4 (C5 when octaveShift is on)
+    drawPiano(0, COLOR_GRAY); // ADDED GRAPHIC
   } else if ((buttonStates & SW2) && (buttonStates & SW3)) {
     buzzer_set_period(octaveShift ? 851 : 1703);  // D4 (D5 when octaveShift is on)
+    //drawPiano(32, COLOR_GRAY);
   } else if (buttonStates & SW3) {
     buzzer_set_period(octaveShift ? 758 : 1517);  // E4 (E5 when octaveShift is on)
+    drawPiano(32, COLOR_GRAY); // ADDED GRAPHIC
   } else if ((buttonStates & SW3) && (buttonStates & SW4)) {
     buzzer_set_period(octaveShift ? 716 : 1432);  // F4 (F5 when octaveShift is on)
+    //drawPiano(96, COLOR_GRAY);
   } else if (buttonStates & SW4) {
     buzzer_set_period(octaveShift ? 638 : 1276);  // G4 (G5 when octaveShift is on)
+    drawPiano(64, COLOR_GRAY); // ADDED GRAPHIC
   } else if ((buttonStates & SW4) && (buttonStates & SW5)) {
     buzzer_set_period(octaveShift ? 568 : 1136);  // A4 (A5 when octaveShift is on)
   } else if (buttonStates & SW5) {
     buzzer_set_period(octaveShift ? 506 : 1012);  // B4 (B5 when octaveShift is on)
+    drawPiano(96, COLOR_GRAY); // ADDED GRAPHIC
   } else {
+    drawPiano(0, COLOR_WHITE); // added graphic defautl
     buzzer_set_period(0); // Stop buzzer if no switch is pressed
   }
 }
